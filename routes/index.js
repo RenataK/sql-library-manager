@@ -67,12 +67,12 @@ router.get('/books/new', (req, res) => {
 });
 
 // /* POST create book. */
-// router.post('/books/new', asyncHandler(async (req, res) => {
-//   let book;
+router.post('/books/new', asyncHandler(async (req, res) => {
+  let book;
 //   try {
-//     book = await Book.create(req.body);
-//     console.log(book);
-//     res.redirect("/books/" + book.id);
+    book = await Book.create(req.body);
+    console.log(book);
+    res.redirect("/books/" + book.id);
 //   } catch (error) {
 //     if(error.name === "SequelizeValidationError") { // checking the error
 //       book = await Book.build(req.body);
@@ -81,7 +81,7 @@ router.get('/books/new', (req, res) => {
 //       throw error; // error caught in the asyncHandler's catch block
 //     }  
 //   }
-// }));
+}));
 
 /* GET individual book. */
 router.get("/books/:id", asyncHandler(async (req, res) => {
