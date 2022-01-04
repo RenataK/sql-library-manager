@@ -2,21 +2,25 @@
 
 //- block content
 //-   h1=title
+//-   p 
+//-     | Are you sure you want to delete 
+//-     em= book.title
+//-     | ?
 //-   form(action="/books/" + book.id + "/delete", method="post")
-//-     p
-//-       label(for='title') Title
-//-       input#title(name='title' type='text')
-//-     p
-//-       label(for='author') Author
-//-       input#author(name='author' type='text')
-//-     p
-//-       label(for='genre') Genre
-//-       input#genre(name='genre' type='text')
-//-     p
-//-       label(for='year') Year
-//-       input#year(name='year' type='text')
-//-     p
-//-       input(type='submit' value='Create New Book')
-//-     p
-//-       a.button(href="/books/" + book.id + "/delete") Cancel
+//-     a(href="/books/" + book.id) No! Take me back! 
+//-     | 
+//-     input(type="submit", value = "Yes, I'm sure")
+//-   form(action="/books/" + book.id + "/delete", method="post")
+//-   p Are 
 
+
+extends ../layout
+
+block content
+    form(action="/books/" + book.id + "/delete", method="post")
+        p
+        input(type='submit' value='Delete Book')
+        //- form(action="/books/" + book.id, method="post")
+        
+
+        //- form(action="/books/" + book.id + "/delete", method="post")

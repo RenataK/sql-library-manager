@@ -4,13 +4,13 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const Sequelize = require('sequelize'); //require sequelize instance 
-// const models = require('./models');
+const models = require('./models');
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const { isNull } = require('util');
 
-var app = express();
+const app = express();
 
 //using a static route and the express.static method to serve the static files located in the public folder
 app.use('/static', express.static('public'));
@@ -33,43 +33,88 @@ const sequelize = new Sequelize({
   storage: 'library.db'
 });
 
-// async IIFE
+//async IIFE
 (async () => {
   await sequelize.sync({ force: true }); //models.sequelize?
   try {
     await sequelize.authenticate();
     console.log('Connection to the database successful!');
   } catch(error) {
-    console.error('Error connecting to the database: ', error);
+    if (error.name === 'SequelizeValidationError') {
+      const errors = error.errors.map(err => err.message)
+      console.error('Validation errors: ', errors);
+  } else {
+      throw error;
+  }
+    // console.error('Error connecting to the database: ', error);
   }
 })();
 
 /* ERROR HANDLERS */
 /* 404 handler to catch undefined or non-existent route requests */
 app.use((req, res, next) => {
-  const error = new Error();
-  error.status = 404;
-  error.message = 'Sorry! Couldn\'t find the page your\'e looking for.';
-  console.log('404 error handler called');
-  res.render('page-not-found', {error}); 
+  // if (error.status == 404) {
+    const error = new Error();
+    error.status = 404;
+    error.message = 'Sorry! Couldn\'t find the page your\'e looking for.';
+    console.log('404 error handler called');
+    res.render('page-not-found', {error}); 
+    // next(error);
+  // }
+  // const error = new Error();
+  // error.status = 404;
+  // error.message = 'Sorry! Couldn\'t find the page your\'e looking for.';
+  // console.log('404 error handler called');
+  // res.render('page-not-found', {error}); 
+  // res.render('page-not-found', error); 
+});
+
+// app.use((req, res, next) => {
+//   const error = new Error();
+//   console.log('404 error handler called');
+//   res.status(404).render('page-not-found', {error});
+
+  /* TODO 1: Send a response to the client
+    - Set the response status to 404
+    - Render the 'not-found' view
+  */ 
+//});
+
+/* Global error handler */
+app.use((err, req, res, next) => {
+
+  if (err) {
+    console.log('Global error handler called', {err});
+  }
+  if (err.status === 404) {  
+    res.status(404).render('page-not-found', {err});
+  } else {
+    err.message = err.message || `An error occured`;
+    res.status(err.status || 500).render('error', {err});
+  }
 });
 
 //global error handler
-app.use((err, req, res, next) => {
-  if (err.status == null) {
-    err.status = 500;
-  } else if (err.message == null) {
-    err.message = 'There was a problem with the server'
-  }
-  console.log({err}.status + {err}.message); //Might be wrong
-  res.render('error', {err}); 
-});
+// app.use((err, req, res, next) => {
+//    if (err.status == null) {
+//     // err.status = 500;
+//     res.status(500).render('error', {err});
+//     // res.render('error', {err}); 
+//   } else if (err.message == null) {
+//     // err.message = 'There was a problem with the server';
+//     res.message('There was a problem with the server').render('error', {err});
+//     // res.render('error', {err}); 
+//   }
+//   // console.log({err}.status + {err}.message); //Might be wrong
+//   // res.render('error', {err}); 
+//   // res.render('error', err); 
+// });
 
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
-});
+// app.use(function(req, res, next) {
+//   next(createError(404));
+// });
 
 // error handler
 app.use(function(err, req, res, next) {
@@ -77,7 +122,7 @@ app.use(function(err, req, res, next) {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
+  //render the error page
   res.status(err.status || 500);
   res.render('error');
 });

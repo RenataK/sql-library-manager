@@ -2,7 +2,7 @@ extends ../layout
 
 block content
   h1=title
-  form(method="POST")
+  form(method="POST") 
     p
       label(for='title') Title
       input#title(name='title' type='text' value=book.title)
@@ -16,11 +16,11 @@ block content
       label(for='year') Year
       input#year(name='year' type='text' value=book.year)
     p
-      input(type='submit' value='Update Book')
-      //- form(action="/books/" + book.id, method="post")
+      input(type='submit' value='Update Book' formaction="/books/" + book.id) 
+      //- input(type='submit' value='Update Book' formaction="/books/" + book.id + "/update") 
+
     p
       a.button(href='/books') Cancel
     p
-      //- form(action="/books/" + book.id + "/delete", method="post")
-      input(type='submit' value='Delete Book')
-      //- form(action="/books/" + book.id + "/delete", method="post")
+      input(type='submit' value='Delete Book' formaction="/books/" + book.id + "/delete")
+
