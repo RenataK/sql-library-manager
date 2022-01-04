@@ -1,23 +1,10 @@
-// var express = require('express');
-// var router = express.Router();
-
-// /* GET users listing. */
-// router.get('/', function(req, res, next) {
-//   // res.send('respond with a resource');
-//   res.redirect('/books');
-// });
-
-// module.exports = router;
-
-
-
-
-
 var express = require('express');
 var router = express.Router();
+//requiring book model to be able to use it and all associated ORM methods(CRUD)
 const Book = require('../models').Book;
 
 /* Handler function to wrap each route. */
+//Running a try/catch block to execute code and catch and exceptions thrown
 function asyncHandler(cb){
   return async(req, res, next) => {
     try {
@@ -29,7 +16,6 @@ function asyncHandler(cb){
   }
 }
 
-/* GET users listing. */
 /* GET Home Route */
 router.get('/', function(req, res, next) {
   // res.send('respond with a resource');
@@ -69,15 +55,7 @@ router.get("/books/:id", asyncHandler(async (req, res) => {
   if (book) {
     res.render("books/update", { book, title: book.title }); 
   } else {
-    // res.render('page-not-found');
-    // const err = new Error();
-    // err.status = 404;
-    // err.message = `An error occured!`;
-    // // next(err);
-    // res.sendStatus(404);
     res.render('page-not-found');
-    console.log('not found');
-    // res.render('error', {err});
   }
 }));
 
@@ -95,7 +73,7 @@ router.post('/books/:id', (async (req, res) => {
   } catch(error) {
     if(error.name === "SequelizeValidationError") { // checking the error
       book = await Book.build(req.body);
-      res.render("books/update", { book, errors: error.errors, title: "Update Book" })
+      res.render("books/update", { book, errors: error.errors })
     } else {
       throw error; // error caught in the asyncHandler's catch block
     }  

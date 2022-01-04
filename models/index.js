@@ -22,7 +22,6 @@ fs
   })
   .forEach(file => {
     const model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);
-    // const model = sequelize['import'](path.join(__dirname, file));
     db[model.name] = model;
   });
 
@@ -32,7 +31,7 @@ Object.keys(db).forEach(modelName => {
   }
 });
 
-db.sequelize = sequelize;
-db.Sequelize = Sequelize;
+db.sequelize = sequelize; //Add any new model to the `db` object
+db.Sequelize = Sequelize; //Assign the Sequelize module to a `Sequelize` property in the `db` object
 
 module.exports = db;

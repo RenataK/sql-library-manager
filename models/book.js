@@ -1,12 +1,9 @@
 'use strict';
 const { Model } = require('sequelize');
-// const Sequelize = require('sequelize');
 
-
+//defining and initializing the Book model:
 module.exports = (sequelize, DataTypes) => {
   class Book extends Model {
-  // module.exports = (sequelize) => {
-  //   class Book extends Sequelize.Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -17,10 +14,13 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Book.init({
+    //Adding the following attributes/columns: title, author, genre, year
     title: {
+      //specifing a data type
       type: DataTypes.STRING,
-      // type: Sequelize.STRING,
+      //setting allowNull to false to ensure no empty fields 
       allowNull: false,
+      //adding validation to title, author, genre, year with a msg property if fields are blank
       validate: {
         notNull: {
           msg: 'Please provide a value for "title"',
@@ -32,7 +32,6 @@ module.exports = (sequelize, DataTypes) => {
     }, 
     author: {
       type: DataTypes.STRING,
-      // type: Sequelize.STRING,
       allowNull: false,
       validate: {
         notNull: {
@@ -45,7 +44,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     genre: { 
       type: DataTypes.STRING,
-      // type: Sequelize.STRING,
       allowNull: false,
       validate: {
         notNull: {
@@ -58,7 +56,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     year: {
       type: DataTypes.INTEGER,
-      // type: Sequelize.INTEGER,
       allowNull: false,
       validate: {
         notNull: {

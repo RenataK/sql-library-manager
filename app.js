@@ -52,37 +52,17 @@ const sequelize = new Sequelize({
 
 /* ERROR HANDLERS */
 /* 404 handler to catch undefined or non-existent route requests */
-app.use((req, res, next) => {
-  // if (error.status == 404) {
+app.use((req, res, next) => {{
     const error = new Error();
     error.status = 404;
     error.message = 'Sorry! Couldn\'t find the page your\'e looking for.';
     console.log('404 error handler called');
     res.render('page-not-found', {error}); 
-    // next(error);
-  // }
-  // const error = new Error();
-  // error.status = 404;
-  // error.message = 'Sorry! Couldn\'t find the page your\'e looking for.';
-  // console.log('404 error handler called');
-  // res.render('page-not-found', {error}); 
-  // res.render('page-not-found', error); 
+  }
 });
-
-// app.use((req, res, next) => {
-//   const error = new Error();
-//   console.log('404 error handler called');
-//   res.status(404).render('page-not-found', {error});
-
-  /* TODO 1: Send a response to the client
-    - Set the response status to 404
-    - Render the 'not-found' view
-  */ 
-//});
 
 /* Global error handler */
 app.use((err, req, res, next) => {
-
   if (err) {
     console.log('Global error handler called', {err});
   }
@@ -93,28 +73,6 @@ app.use((err, req, res, next) => {
     res.status(err.status || 500).render('error', {err});
   }
 });
-
-//global error handler
-// app.use((err, req, res, next) => {
-//    if (err.status == null) {
-//     // err.status = 500;
-//     res.status(500).render('error', {err});
-//     // res.render('error', {err}); 
-//   } else if (err.message == null) {
-//     // err.message = 'There was a problem with the server';
-//     res.message('There was a problem with the server').render('error', {err});
-//     // res.render('error', {err}); 
-//   }
-//   // console.log({err}.status + {err}.message); //Might be wrong
-//   // res.render('error', {err}); 
-//   // res.render('error', err); 
-// });
-
-
-// catch 404 and forward to error handler
-// app.use(function(req, res, next) {
-//   next(createError(404));
-// });
 
 // error handler
 app.use(function(err, req, res, next) {
