@@ -1,11 +1,11 @@
 {
   "development": {
     "dialect": "sqlite",
-    "storage": "postgres://rkpbwioavqthnz:2038fe8496b688b7e4c20c72c31a055b62a09b80d46e2ec186f7257c40eb8728@ec2-3-224-112-203.compute-1.amazonaws.com:5432/d6f6s56nvf468n"
+    "storage": "library.db"
   },
   "test": {
     "dialect": "sqlite",
-    "storage": "postgres://rkpbwioavqthnz:2038fe8496b688b7e4c20c72c31a055b62a09b80d46e2ec186f7257c40eb8728@ec2-3-224-112-203.compute-1.amazonaws.com:5432/d6f6s56nvf468n"
+    "storage": "library.db"
   },
   "production": {
     "dialect": "sqlite",
